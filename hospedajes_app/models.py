@@ -1,24 +1,13 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.forms import forms
+
 
 # Create your models here.
-class User(models.Model):
-    username: models.CharField(null=False)
-    password: models.CharField(max_length=100)
-    email: models.EmailField(null=False)
-    name: models.CharField(null=False)
-    surname: models.CharField(null=False)
+class Host(User):
+    pass
 
-    def __init__(self, username, password, email, name, surname):
-        self.username = username
-        self.password = password
-        self.email = email
-        self.name = name
-        self.surname = surname
-
-    def __str__(self):
-        return self.name + " " + self.surname
-
+    class Meta:
+        verbose_name_plural = 'Users'
 
 class City(models.Model):
     name: models.CharField(null=False)
