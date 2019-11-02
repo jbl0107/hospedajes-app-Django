@@ -1,0 +1,35 @@
+{% extends 'hospedajes_app/base.html' %}
+
+{% block titulo %}
+		<title>Ingreso de Nueva Propiedad</title>
+{% endblock %}
+{% block content %}
+
+    <h1>Alta de Propiedad</h1>
+
+     <form method="post"> {% csrf_token %}
+
+          Titulo:<br>
+          <input type="text" name="title" ><br>
+
+          Pasajeros:<br>
+          <input type="number" name="pax"><br>
+
+          Descripcion:<br>
+          <input type="text" name="description"><br>
+<!--
+          Imagen:<br>
+          <input type="file" name="image" ><br>
+-->
+          Importe Diario:<br>
+          <input type="number" name="daily" ><br>
+<!--
+          Ciudad:<br>
+          <input type="text" name="city" ><br>
+
+          Usuario (deberia levantarlo dinamicamente):<br>
+          <input type="text" name="user" ><br><br>
+-->
+          <input type="submit" value="Agregar">
+     </form>
+{% endblock %}

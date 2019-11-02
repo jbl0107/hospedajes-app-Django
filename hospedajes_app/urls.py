@@ -1,9 +1,19 @@
 from django.urls import include, path
 
 from hospedajes_app import views
+from hospedajes_app.views import property_form, ficha_property
 
 urlpatterns = [
     path('', views.index, name='index'),
+
+    # url(r'^alta_salon/$', login_required(ingresar_salon), name='altaSalon'),
+    path('new_property/', property_form, name='propertyForm'),
+    path('property/<int:property_id>', ficha_property, name='property'),
+
+
+
+
+
 
     # ex: /polls/
     path('', views.index, name='index'),
@@ -13,4 +23,5 @@ urlpatterns = [
     path('<int:question_id>/results/', views.results, name='results'),
     # ex: /polls/5/vote/
     path('<int:question_id>/vote/', views.vote, name='vote'),
+
 ]
