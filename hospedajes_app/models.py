@@ -11,11 +11,10 @@ class Host(User):
 
 
 class City(models.Model):
-    name = models.CharField(max_length=25, null=True)
-    country = models.CharField(max_length=25, null=True)
+    name = models.CharField(max_length=25, null=True, unique=True)
 
     def __str__(self):
-        return self.name + ", " + self.country
+        return self.name + '.'
 
     class Meta:
         verbose_name_plural = 'Cities'
@@ -41,8 +40,8 @@ class Property(models.Model):
     description = models.CharField(max_length=25, null=True)
     image = models.ImageField(null=True, default=0)
     daily_import = models.FloatField(null=True)
-    #  fk_user = models.ForeignKey(Host, null=True, on_delete=models.DO_NOTHING)  # models.SET_NULL
-    #  fk_city = models.ForeignKey(City, null=True, on_delete=models.DO_NOTHING)
+    # user = models.ForeignKey(Host, null=True, on_delete=models.DO_NOTHING)  # models.SET_NULL
+    city = models.ForeignKey(City, null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.title + ", " + self.description + ", " + self.pax + ", " + self.daily_import + "."

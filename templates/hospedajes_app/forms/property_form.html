@@ -23,10 +23,14 @@
 -->
           Importe Diario:<br>
           <input type="number" name="daily" ><br>
-<!--
-          Ciudad:<br>
-          <input type="text" name="city" ><br>
 
+          Ciudad:<br>
+         <select name="city">
+             {% for c in cities %}
+             <option value="{{ c.id }}"> {{ c.name }} </option>
+             {% endfor %}
+         </select>
+         <!--
           Usuario (deberia levantarlo dinamicamente):<br>
           <input type="text" name="user" ><br><br>
 -->

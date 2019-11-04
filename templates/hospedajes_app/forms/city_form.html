@@ -1,0 +1,37 @@
+{% extends 'hospedajes_app/base.html' %}
+
+{% block titulo %}
+		<title>Ingreso de Nueva Ciudad</title>
+{% endblock %}
+{% block content %}
+
+    <h1>Alta de Ciudad</h1>
+
+     <form method="post"> {% csrf_token %}
+
+          Nombre:<br>
+          <input type="text" name="name" ><br>
+
+          <input type="submit" value="Agregar">
+     </form>
+
+    <h1>Lista de Ciudades:</h1><br/><br/>
+
+    <table border=1>
+        {% if cities %}
+        <tr>
+            <th>Nombre</th>
+
+        </tr>
+        {% for c in cities %}
+        <tr>
+            <td>{{ c.name }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+            <h3>No hay ciudades</h3>
+        {% endif %}
+    </table>
+
+
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.urls import include, path
 
 from hospedajes_app import views
-from hospedajes_app.views import property_form, ficha_property
+from hospedajes_app.views import property_form, ficha_property, city_form
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -9,10 +9,7 @@ urlpatterns = [
     # url(r'^alta_salon/$', login_required(ingresar_salon), name='altaSalon'),
     path('new_property/', property_form, name='propertyForm'),
     path('property/<int:property_id>', ficha_property, name='property'),
-
-
-
-
+    path('new_city', city_form, name='cityForm'),
 
 
     # ex: /polls/

@@ -4,18 +4,29 @@
 
 {% block content %}
 
-		Propiedades:<br/><br/>
-		<table border=1>
-			<tr>
-                <td>Titulo</td>
-                <td>Descripción</td>
-            </tr>
-			{% for p in properties %}
-			<tr>
-				<td>{{ p.title }}</td>
-				<td>{{ p.description }}</td>
-			</tr>
-			{% endfor %}
-		</table>
+    <h1>Propiedades:</h1><br/><br/>
+
+    <table border=1>
+        {% if properties %}
+        <tr>
+            <th>Titulo</th>
+            <th>Descripción</th>
+            <th>Pasajeros</th>
+            <th>Importe Diario</th>
+            <th>Ciudad</th>
+        </tr>
+        {% for p in properties %}
+        <tr>
+            <td>{{ p.title }}</td>
+            <td>{{ p.description }}</td>
+            <td>{{ p.pax }} </td>
+            <td>{{ p.daily_import }} </td>
+            <td>{{ p.city.name }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+            <h3>No hay propiedades</h3>
+        {% endif %}
+    </table>
 
 {% endblock %}

@@ -2,38 +2,58 @@ from datetime import timezone
 
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
-from hospedajes_app.models import Property
+from hospedajes_app.models import Property, City
 from .forms import PostForm
 
 
 # Create your views here.
 
 def index(request):
-    return render_to_response('hospedajes_app/index.html')
+    properties = Property.objects.all()
+    return render_to_response('hospedajes_app/index.html', {'properties': properties})
 
 
-def login(request):
-    return render_to_response('hospedajes_app/login.html')
+# def login(request):
+#    return render_to_response('hospedajes_app/login.html')
 
 
 def property_form(request):
     error = ''
+    cities = City.objects.all()
     if request.method == 'POST':
         title = request.POST['title']
         description = request.POST['description']
         pax = request.POST['pax']
         daily_import = request.POST['daily']
         # image = request.POST['image']
-        # fk_city = request.POST['fk_city']
-        # fk_user = request.POST['fk_user']
+        fk_city = request.POST['city']
+        fk_user = request.POST['fk_user']
+
+        city = City.objects.get(id=fk_city)
 
         if title is not None:
-            property = Property(title=title, pax=pax, description=description, daily_import=daily_import)
+            property = Property(title=title, pax=pax, description=description, daily_import=daily_import, city=city)
             property.save()
         else:
             error = 'La propiedad debe tener nombre'
 
-    return render(request, 'hospedajes_app/forms/property_form.html', {'error': error})
+    return render(request, 'hospedajes_app/forms/property_form.html', {'error': error, 'cities': cities})
+
+
+def city_form(request):
+    error = ''
+    cities = City.objects.all()
+
+    if request.method == 'POST':
+        name = request.POST['name']
+
+        if name is not None:
+            city = City(name=name)
+            city.save()
+        else:
+            error = 'La ciudad debe tener nombre'
+
+    return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'error': error})
 
 
 def ficha_property(request, property_id):
@@ -41,9 +61,7 @@ def ficha_property(request, property_id):
     return render_to_response('hospedajes_app/f_property.html', {'property': property})
 
 
-def list_properties(request):
-    properties = Property.objects.get()
-    return render_to_response('hospedajes_app/index.html', {'properties': properties})
+
 
 
 
