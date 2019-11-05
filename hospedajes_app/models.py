@@ -38,13 +38,13 @@ class Property(models.Model):
     pax = models.IntegerField(null=True)
     title = models.CharField(max_length=25, null=True)
     description = models.CharField(max_length=25, null=True)
-    image = models.ImageField(null=True, default=0)
+    image = models.ImageField(blank=True)
     daily_import = models.FloatField(null=True)
     # user = models.ForeignKey(Host, null=True, on_delete=models.DO_NOTHING)  # models.SET_NULL
     city = models.ForeignKey(City, null=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
-        return self.title + ", " + self.description + ", " + self.pax + ", " + self.daily_import + "."
+        return self.title + ", " + self.description + "."
 
     class Meta:
         verbose_name_plural = 'Properties'

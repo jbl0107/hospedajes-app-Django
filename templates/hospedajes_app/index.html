@@ -1,6 +1,6 @@
 {% extends "hospedajes_app/base.html" %}
 
-{% block titulo %}Próximas Conferencias{% endblock %}
+{% block titulo %}Propiedades Disponibles{% endblock %}
 
 {% block content %}
 
@@ -9,19 +9,25 @@
     <table border=1>
         {% if properties %}
         <tr>
+            <th>#</th>
             <th>Titulo</th>
             <th>Descripción</th>
             <th>Pasajeros</th>
             <th>Importe Diario</th>
             <th>Ciudad</th>
+            <th>Imagen</th>
+            <th>Detalles</th>
         </tr>
         {% for p in properties %}
         <tr>
+            <td>{{ p.id }}</td>
             <td>{{ p.title }}</td>
             <td>{{ p.description }}</td>
-            <td>{{ p.pax }} </td>
-            <td>{{ p.daily_import }} </td>
+            <td>{{ p.pax }}</td>
+            <td>{{ p.daily_import }}</td>
             <td>{{ p.city.name }}</td>
+            <td> <img src="{{ p.image.url }}" width="80"></td>
+            <td> <a href="{% url 'hospedajes_app:property' p.id %}"> Ver más</a> </td>
         </tr>
         {% endfor %}
         {% else %}

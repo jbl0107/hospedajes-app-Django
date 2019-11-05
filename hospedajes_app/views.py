@@ -2,6 +2,8 @@ from datetime import timezone
 
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
+from django.views import generic
+
 from hospedajes_app.models import Property, City
 from .forms import PostForm
 
@@ -13,10 +15,6 @@ def index(request):
     return render_to_response('hospedajes_app/index.html', {'properties': properties})
 
 
-# def login(request):
-#    return render_to_response('hospedajes_app/login.html')
-
-
 def property_form(request):
     error = ''
     cities = City.objects.all()
@@ -25,14 +23,14 @@ def property_form(request):
         description = request.POST['description']
         pax = request.POST['pax']
         daily_import = request.POST['daily']
-        # image = request.POST['image']
+        image = request.POST['image']
         fk_city = request.POST['city']
-        fk_user = request.POST['fk_user']
+        # fk_user = request.POST['fk_user']
 
         city = City.objects.get(id=fk_city)
 
         if title is not None:
-            property = Property(title=title, pax=pax, description=description, daily_import=daily_import, city=city)
+            property = Property(title=title, pax=pax, description=description, daily_import=daily_import, city=city, image=image)
             property.save()
         else:
             error = 'La propiedad debe tener nombre'
@@ -56,9 +54,9 @@ def city_form(request):
     return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'error': error})
 
 
-def ficha_property(request, property_id):
+def view_property(request, property_id):
     property = Property.objects.get(id=property_id)
-    return render_to_response('hospedajes_app/f_property.html', {'property': property})
+    return render_to_response('hospedajes_app/view_property.html', {'property': property})
 
 
 
