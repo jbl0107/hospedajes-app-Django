@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hospedajes_app',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,6 +118,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+LOGIN_REDIRECT_URL = '../../hospedajes'
+LOGOUT_REDIRECT_URL = '../../hospedajes'
 
 MEDIA_ROOT = 'media'  # le decimos donde queremos que haga el upload de nuestros archivos
 MEDIA_URL = '/media/'  # url que se va a formar para traer nuestros archivos

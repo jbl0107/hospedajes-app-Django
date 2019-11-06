@@ -7,7 +7,7 @@
 
     <h1>Alta de Propiedad</h1>
 
-     <form method="post"> {% csrf_token %}
+     <form method="post" enctype="multipart/form-data"> {% csrf_token %}
 
           Titulo:<br>
           <input type="text" name="title" ><br>
@@ -19,7 +19,7 @@
           <input type="text" name="description"><br>
 
           Imagen:<br>
-          <input type="file" name="image" ><br>
+          <input type="file" name="propertyImage" ><br>
 
           Importe Diario:<br>
           <input type="number" name="daily" ><br>

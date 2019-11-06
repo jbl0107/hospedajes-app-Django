@@ -1,18 +1,35 @@
 from datetime import timezone
 
 from django.http import HttpResponse
-from django.shortcuts import render, render_to_response, redirect, get_object_or_404
-from django.views import generic
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
+from hospedaje.settings import MEDIA_ROOT
+from hospedajes_app.forms import PostForm
 from hospedajes_app.models import Property, City
-from .forms import PostForm
 
-
-# Create your views here.
 
 def index(request):
     properties = Property.objects.all()
-    return render_to_response('hospedajes_app/index.html', {'properties': properties})
+    return render(request, 'hospedajes_app/index.html', {'properties': properties})
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('../')
+    else:
+        form = UserCreationForm()
+
+    return render(request, 'registration/signup.html', {
+        'form': form
+    })
 
 
 def property_form(request):
@@ -23,19 +40,29 @@ def property_form(request):
         description = request.POST['description']
         pax = request.POST['pax']
         daily_import = request.POST['daily']
-        image = request.POST['image']
+        image = request.FILES['propertyImage']
         fk_city = request.POST['city']
         # fk_user = request.POST['fk_user']
 
         city = City.objects.get(id=fk_city)
 
         if title is not None:
-            property = Property(title=title, pax=pax, description=description, daily_import=daily_import, city=city, image=image)
+            property = Property(title=title, pax=pax, description=description, daily_import=daily_import, city=city,
+                                image=image, )
             property.save()
         else:
             error = 'La propiedad debe tener nombre'
 
     return render(request, 'hospedajes_app/forms/property_form.html', {'error': error, 'cities': cities})
+
+
+def save_file(file, path=''):
+    """ Little helper to save a file """
+    filename = file._get_name()
+    fd = open('%s/%s' % (MEDIA_ROOT, str(path) + str(filename)), 'wb')
+    for chunk in file.chunks():
+        fd.write(chunk)
+    fd.close()
 
 
 def city_form(request):
@@ -57,6 +84,14 @@ def city_form(request):
 def view_property(request, property_id):
     property = Property.objects.get(id=property_id)
     return render_to_response('hospedajes_app/view_property.html', {'property': property})
+
+
+
+
+
+
+
+
 
 
 
@@ -104,16 +139,6 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=property)
     return render(request, 'hospedajes_app/post_edit.html', {'form': form})
-
-
-
-
-
-
-
-
-
-
 
 
 def detail(request, question_id):

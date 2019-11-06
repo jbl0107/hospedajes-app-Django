@@ -13,12 +13,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+
+from hospedaje import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hospedajes/', include('hospedajes_app.urls')),
-    path('', include('hospedajes_app.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  #  static nos va a permitir generar una nueva url en base a nuestro media url y media root.
