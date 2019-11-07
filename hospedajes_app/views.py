@@ -1,15 +1,16 @@
 from datetime import timezone
 
-from django.http import HttpResponse
-from django.shortcuts import render, redirect, render_to_response, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+from django.urls import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from hospedaje.settings import MEDIA_ROOT
-from hospedajes_app.forms import PostForm
+from hospedajes_app.forms import CityForm, PropertyForm
 from hospedajes_app.models import Property, City
 
 
@@ -32,6 +33,56 @@ def signup(request):
     })
 
 
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
+def property_form(request):
+    cities = City.objects.all()
+
+    if request.method == 'POST':
+        form = PropertyForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_property = form.save()
+            return HttpResponseRedirect(reverse('hospedajes_app:propertyForm'))
+    else:
+        form = PropertyForm()
+
+    return render(request, 'hospedajes_app/forms/property_form.html', {'cities': cities, 'form': form})
+
+
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
+def city_form(request):
+    cities = City.objects.all()
+
+    if request.method == 'POST':
+        form = CityForm(request.POST)
+        if form.is_valid():
+            new_city = form.save()
+        return HttpResponseRedirect(reverse('hospedajes_app:cityForm'))
+    else:
+        form = CityForm()
+
+    return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'form': form})
+
+
+def view_property(request, property_id):
+    property = Property.objects.get(id=property_id)
+    return render(request, 'hospedajes_app/view_property.html', {'property': property})
+
+
+@login_required
+def secret_page(request):
+    return render(request, 'hospedajes_app/secret_page.html')
+
+
+@login_required
+class SecretPage(LoginRequiredMixin, TemplateView):
+    template_name = 'hospedajes_app/secret_page.html'
+
+
+"""
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
 def property_form(request):
     error = ''
     cities = City.objects.all()
@@ -57,14 +108,16 @@ def property_form(request):
 
 
 def save_file(file, path=''):
-    """ Little helper to save a file """
     filename = file._get_name()
     fd = open('%s/%s' % (MEDIA_ROOT, str(path) + str(filename)), 'wb')
     for chunk in file.chunks():
         fd.write(chunk)
     fd.close()
+"""
 
-
+"""
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
 def city_form(request):
     error = ''
     cities = City.objects.all()
@@ -79,76 +132,4 @@ def city_form(request):
             error = 'La ciudad debe tener nombre'
 
     return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'error': error})
-
-
-def view_property(request, property_id):
-    property = Property.objects.get(id=property_id)
-    return render_to_response('hospedajes_app/view_property.html', {'property': property})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-def post_list(request):
-    return render(request, 'hospedajes_app/post_list.html', {})
-
-
-def post_new(request):
-    if request.method == "POST":
-        form = PostForm(request.POST)
-        if form.is_valid():
-            property = form.save(commit=False)
-            property.title = request.title
-            property.description = request.description
-            property.pax = request.pax
-            property.daily_import = request.daily_import
-            property.image = request.image
-            property.fk_city = request.fk_city
-            property.fk_user = request.fk_user
-            property.save()
-            return redirect('post_detail', pk=property.pk)
-    else:
-        form = PostForm()
-    return render(request, 'hospedajes_app/post_edit.html', {'form': form})
-
-
-def post_edit(request, pk):
-    property = get_object_or_404(Property, pk=pk)
-    if request.method == "POST":
-        form = PostForm(request.POST, instance=property)
-        if form.is_valid():
-            property = form.save(commit=False)
-            property.author = request.user
-            property.published_date = timezone.now()
-            property.save()
-            return redirect('post_detail', pk=property.pk)
-    else:
-        form = PostForm(instance=property)
-    return render(request, 'hospedajes_app/post_edit.html', {'form': form})
-
-
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
-
-
-def results(request, question_id):
-    response = "You're looking at the results of question %s."
-    return HttpResponse(response % question_id)
-
-
-def vote(request, question_id):
-    return HttpResponse("You're voting on question %s." % question_id)
+"""

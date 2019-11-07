@@ -124,3 +124,5 @@ LOGOUT_REDIRECT_URL = '../../hospedajes'
 
 MEDIA_ROOT = 'media'  # le decimos donde queremos que haga el upload de nuestros archivos
 MEDIA_URL = '/media/'  # url que se va a formar para traer nuestros archivos
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

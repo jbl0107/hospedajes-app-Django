@@ -48,7 +48,7 @@ class Property(models.Model):
     pax = models.IntegerField(null=True)
     title = models.CharField(max_length=25, null=True)
     description = models.CharField(max_length=100, null=True)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(null=True, blank=True)
     daily_import = models.FloatField(null=True)
     # user = models.ForeignKey(Host, null=True, on_delete=models.DO_NOTHING)  # models.SET_NULL
     city = models.ForeignKey(City, null=True, on_delete=models.DO_NOTHING)
@@ -62,11 +62,11 @@ class Property(models.Model):
 
 class RentalDate(models.Model):
     fk_property = models.ForeignKey(Property, null=True, on_delete=models.DO_NOTHING)
-    fk_booking = models.ForeignKey(Booking, default=None, blank=True, on_delete=models.DO_NOTHING)
+    fk_booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.DO_NOTHING)
     date = models.DateField(null=True)
 
     def __str__(self):
-        return self.date + "."
+        return "Fecha"
 
     class Meta:
         verbose_name_plural = 'RentalDates'

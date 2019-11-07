@@ -18,10 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 from hospedaje import settings
+from hospedajes_app import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hospedajes/', include('hospedajes_app.urls')),
+    path('', include('hospedajes_app.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  #  static nos va a permitir generar una nueva url en base a nuestro media url y media root.
