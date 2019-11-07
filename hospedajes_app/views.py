@@ -75,7 +75,6 @@ def secret_page(request):
     return render(request, 'hospedajes_app/secret_page.html')
 
 
-@login_required
 class SecretPage(LoginRequiredMixin, TemplateView):
     template_name = 'hospedajes_app/secret_page.html'
 
