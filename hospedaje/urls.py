@@ -26,4 +26,6 @@ urlpatterns = [
     path('', include('hospedajes_app.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)  #  static nos va a permitir generar una nueva url en base a nuestro media url y media root.
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL)
+
+#  static nos va a permitir generar una nueva url en base a nuestro media url y media root.
