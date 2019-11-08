@@ -23,7 +23,7 @@ from hospedajes_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hospedajes/', include('hospedajes_app.urls')),
-    path('', include('hospedajes_app.urls')),
+    path('', views.index, name='index'),  # path para cuando tocas en 'view site' desde Django Administration
     path('accounts/', include('django.contrib.auth.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL)

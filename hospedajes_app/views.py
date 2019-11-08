@@ -1,17 +1,16 @@
 from datetime import timezone
 
+from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required, permission_required
-from django.urls import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from hospedaje.settings import MEDIA_ROOT
-from hospedajes_app.forms import CityForm, PropertyForm
-from hospedajes_app.models import Property, City
+from hospedajes_app.forms import CityForm, PropertyForm, FeatureForm, ComfortForm
+from hospedajes_app.models import Property, City, RentalDate, Feature, Comfort, ComfortXProperty
 
 
 def index(request):
@@ -22,8 +21,14 @@ def index(request):
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+
         if form.is_valid():
             form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+
             return redirect('../')
     else:
         form = UserCreationForm()
@@ -42,7 +47,7 @@ def property_form(request):
         form = PropertyForm(request.POST, request.FILES)
         if form.is_valid():
             new_property = form.save()
-            return HttpResponseRedirect(reverse('hospedajes_app:propertyForm'))
+            # return HttpResponseRedirect(reverse('hospedajes_app:propertyForm'))
     else:
         form = PropertyForm()
 
@@ -58,16 +63,51 @@ def city_form(request):
         form = CityForm(request.POST)
         if form.is_valid():
             new_city = form.save()
-        return HttpResponseRedirect(reverse('hospedajes_app:cityForm'))
+            # return HttpResponseRedirect(reverse('hospedajes_app:cityForm'))
     else:
         form = CityForm()
 
     return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'form': form})
 
 
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
+def feature_form(request):
+    features = Feature.objects.all()
+
+    if request.method == 'POST':
+        form = FeatureForm(request.POST)
+        if form.is_valid():
+            new_feature = form.save()
+            # return HttpResponseRedirect(reverse('hospedajes_app:featureForm'))
+    else:
+        form = FeatureForm()
+
+    return render(request, 'hospedajes_app/forms/feature_form.html', {'features': features, 'form': form})
+
+
+@login_required
+@permission_required('hospedajes_app.propertyForm', login_url='login')
+def comfort_form(request):
+    comforts = Comfort.objects.all()
+
+    if request.method == 'POST':
+        form = ComfortForm(request.POST)
+        if form.is_valid():
+            new_comfort = form.save()
+            # return HttpResponseRedirect(reverse('hospedajes_app:comfortForm'))
+    else:
+        form = ComfortForm()
+
+    return render(request, 'hospedajes_app/forms/comfort_form.html', {'comforts': comforts, 'form': form})
+
+
 def view_property(request, property_id):
     property = Property.objects.get(id=property_id)
-    return render(request, 'hospedajes_app/view_property.html', {'property': property})
+    rentalDates = RentalDate.objects.filter(property_id=property_id, booking_id=None)
+    comforts = ComfortXProperty.objects.filter(property_id=property_id)
+    features = Feature.objects.filter(property__pk=property_id)
+    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'rentalDates': rentalDates, 'comforts': comforts, 'features': features})
 
 
 @login_required

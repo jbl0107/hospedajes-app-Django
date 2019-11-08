@@ -1,30 +1,30 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.db import models
 
 
-# Create your models here.
 class Host(User):
     pass
 
     class Meta:
-        verbose_name_plural = 'Users'
+        verbose_name_plural = 'Hosts'
 
 
-class User(models.Model):
-    name = models.CharField(max_length=25, null=True)
-    surname = models.CharField(max_length=25, null=True)
-    email = models.EmailField(null=True)
-    dni = models.IntegerField(null=True)
+class Profile(models.Model):
+    name = models.CharField(max_length=25)
+    surname = models.CharField(max_length=25)
+    email = models.EmailField()
+    dni = models.IntegerField()
 
     def __str__(self):
         return self.name + ", " + self.surname + "."
 
     class Meta:
-        verbose_name_plural = "Users"
+        verbose_name_plural = "Profiles"
 
 
 class City(models.Model):
-    name = models.CharField(max_length=25, null=True, unique=True)
+    name = models.CharField(max_length=25, unique=True)
 
     def __str__(self):
         return self.name
@@ -33,9 +33,29 @@ class City(models.Model):
         verbose_name_plural = 'Cities'
 
 
+class Feature(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Features'
+
+
+class Comfort(models.Model):
+    name = models.CharField(max_length=25, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Comforts'
+
+
 class Booking(models.Model):  # Reserva
-    user = models.ForeignKey(User, null=True, on_delete=models.DO_NOTHING)
-    total = models.FloatField(default=0, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    total = models.FloatField(default=0)
 
     def __str__(self):
         return self.name + "."
@@ -45,13 +65,15 @@ class Booking(models.Model):  # Reserva
 
 
 class Property(models.Model):
-    pax = models.IntegerField(null=True)
-    title = models.CharField(max_length=25, null=True)
+    REQUIRED_FIELDS = ('user',)
+    pax = models.IntegerField()
+    title = models.CharField(max_length=25)
     description = models.CharField(max_length=100, null=True)
     image = models.ImageField(null=True, blank=True)
-    daily_import = models.FloatField(null=True)
-    # user = models.ForeignKey(Host, null=True, on_delete=models.DO_NOTHING)  # models.SET_NULL
-    city = models.ForeignKey(City, null=True, on_delete=models.DO_NOTHING)
+    daily_import = models.FloatField()
+    city = models.ForeignKey(City, on_delete=models.DO_NOTHING)
+    features = models.ManyToManyField(Feature, blank=True)
+    user = models.ForeignKey(Host, null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title + ", " + self.description + "."
@@ -60,13 +82,25 @@ class Property(models.Model):
         verbose_name_plural = 'Properties'
 
 
-class RentalDate(models.Model):
-    fk_property = models.ForeignKey(Property, null=True, on_delete=models.DO_NOTHING)
-    fk_booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.DO_NOTHING)
-    date = models.DateField(null=True)
+class ComfortXProperty(models.Model):
+    comfort = models.ForeignKey(Comfort, on_delete=models.DO_NOTHING)
+    property = models.ForeignKey(Property, on_delete=models.DO_NOTHING)
+    quantity = models.IntegerField()
 
     def __str__(self):
-        return "Fecha"
+        return "ComfortXProperty"
+
+    class Meta:
+        verbose_name_plural = 'ComfortsXProperty'
+
+
+class RentalDate(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.DO_NOTHING)
+    booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.DO_NOTHING)
+    date = models.DateField()
+
+    def __str__(self):
+        return "RentalDate"
 
     class Meta:
         verbose_name_plural = 'RentalDates'

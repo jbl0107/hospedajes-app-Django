@@ -62,3 +62,41 @@ button:focus, button:active, button:hover
     color: #498BF9;
 }
 
+
+
+
+
+
+
+
+
+
+
+.dropdown-submenu{
+    position: relative;
+}
+.dropdown-submenu a::after{
+    transform: rotate(90deg);
+    position: absolute;
+    right: 177px;
+    top: 40%;
+}
+.dropdown-submenu:hover .dropdown-menu, .dropdown-submenu:focus .dropdown-menu{
+    display: flex;
+    flex-direction: column;
+    position: absolute !important;
+    margin-top: -34px;
+    left: -83.5%;
+}
+@media (max-width: 992px) {
+    .dropdown-menu{
+        width: 50%;
+    }
+    .dropdown-menu .dropdown-submenu{
+        width: auto;
+    }
+}
+
+
+
+
