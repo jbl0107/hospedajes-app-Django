@@ -45,6 +45,7 @@ class Feature(models.Model):
 
 class Comfort(models.Model):
     name = models.CharField(max_length=25, unique=True)
+    className = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.name

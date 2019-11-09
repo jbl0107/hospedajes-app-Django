@@ -4,10 +4,11 @@
 
 {% block content %}
 
+
         <div class="row mt-3">
             <div class="col-lg-7">
 
-                <img src="{{ property.image.url }}" class="img-fluid rounded" style="height:300px; width:500px;">
+                <img src="{{ property.image.url }}" class="img-fluid rounded" style="height:50vh; width:100%;">
 
                 <div class="mt-1">
                     <p class="lead font-weight-bold text-uppercase" style="font-size: 1.50rem">{{ property.title }}</p>
@@ -21,22 +22,41 @@
                     </div>
 
                     {% for c in comforts %}
-                        <p> {{ c.quantity }} {{ c.comfort }}</p>
+                        <div class="d-inline">
+                            <i class="{{ c.comfort.className }}" aria-hidden="true">
+                                <p class="d-inline ml-1"> {{ c.quantity }} {{ c.comfort }} </p>
+                            </i>
+                        </div>
                     {% endfor %}
-                    {% for f in features %}
-                        <p> {{ f.name }}</p>
-                    {% endfor %}
+
+                    <div class="">
+                        {% for f in features %}
+
+                        <div class="d-inline">
+                            <i class="" aria-hidden="true">
+                                <p class="d-inline ml-1"> {{ f.name }}</p>
+                            </i>
+                        </div>
+                        {% endfor %}
+                    </div>
 
 
                 </div>
             </div>
-            <div class="col-lg-4">
-                Futuro Formulario
-                <!-- Meter el formulario de reserva -->
+            <div class="col-lg-5">
 
-                {% for d in rentalDates %}
-                    <p> {{ d.date }}</p>
-                {% endfor %}
+              <div class="card">
+                <div class="card-body">
+                  <h4>Reserva</h4>
+                  <form method="post" novalidate>
+                    {% csrf_token %}
+
+                      <input id="mdp-demo" onfocus="addDates('{{ dates }}')" >
+
+                    <button type="submit" class="btn btn-primary">Reservar</button>
+                  </form>
+                </div>
+              </div>
 
                 <i class="fa fa-dollar-sign ml-2" aria-hidden="true">
                     <p class="d-inline ml-1">{{ property.daily_import|floatformat:2 }} ARS por noche</p>

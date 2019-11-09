@@ -107,7 +107,12 @@ def view_property(request, property_id):
     rentalDates = RentalDate.objects.filter(property_id=property_id, booking_id=None)
     comforts = ComfortXProperty.objects.filter(property_id=property_id)
     features = Feature.objects.filter(property__pk=property_id)
-    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'rentalDates': rentalDates, 'comforts': comforts, 'features': features})
+
+    dates = ''
+    for group in rentalDates.iterator():
+        dates += str(group.date)
+
+    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'rentalDates': rentalDates, 'comforts': comforts, 'features': features, 'dates': dates})
 
 
 @login_required

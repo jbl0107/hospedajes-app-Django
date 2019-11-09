@@ -23,4 +23,4 @@ class FeatureForm(forms.ModelForm):
 class ComfortForm(forms.ModelForm):
     class Meta:
         model = Comfort
-        fields = ('name',)
+        fields = ('name', 'className',)
