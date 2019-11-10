@@ -14,7 +14,7 @@ class Profile(models.Model):
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
     email = models.EmailField()
-    dni = models.IntegerField()
+    dni = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.name + ", " + self.surname + "."
@@ -35,6 +35,7 @@ class City(models.Model):
 
 class Feature(models.Model):
     name = models.CharField(max_length=25, unique=True)
+    className = models.CharField(max_length=50, blank=True)
 
     def __str__(self):
         return self.name
@@ -59,7 +60,7 @@ class Booking(models.Model):  # Reserva
     total = models.FloatField(default=0)
 
     def __str__(self):
-        return self.name + "."
+        return self.profile.name + ", " + self.profile.surname + "."
 
     class Meta:
         verbose_name_plural = 'Bookings'
