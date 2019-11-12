@@ -11,33 +11,71 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from hospedajes_app.forms import CityForm, PropertyForm, FeatureForm, ComfortForm
-from hospedajes_app.models import Property, City, RentalDate, Feature, Comfort, ComfortXProperty, Booking, Profile
+from hospedajes_app.forms import CityForm, PropertyForm, FeatureForm, ComfortForm, ProfileForm
+from hospedajes_app.models import Property, City, RentalDate, Feature, Comfort, ComfortXProperty, Booking, Profile, Host
 
 
 def index(request):
+    cities = City.objects.all()
     properties = Property.objects.all()
-    return render(request, 'hospedajes_app/index.html', {'properties': properties})
+
+    if request.method == 'POST':
+
+        id_city = request.POST['city']
+        cant_pax = int(request.POST['pax'])
+        initDate = request.POST['initDate']
+        endDate = request.POST['endDate']
+
+        if id_city:
+            city = City.objects.get(id=id_city)
+            properties = properties.filter(city=city)
+
+        if cant_pax >= 1:
+            properties = properties.filter(pax__gte=cant_pax)
+
+        prop = []
+        if initDate:
+            for property in properties:
+                rd = RentalDate.objects.filter(property=property, date__gte=initDate)
+                if len(rd)>0:
+                 prop.append(property)
+            properties = prop
+
+        prop = []
+        if endDate:
+            for property in properties:
+                rd = RentalDate.objects.filter(property=property, date__lte=endDate)
+                if len(rd)>0:
+                 prop.append(property)
+            properties = prop
+
+    return render(request, 'hospedajes_app/index.html', {'properties': properties, 'cities': cities})
 
 
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
+        profileForm = ProfileForm(request.POST)
 
-        if form.is_valid():
+        if form.is_valid() and profileForm.is_valid():
             form.save()
+
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+
+            profileForm.save()
+            # profileForm.user = user
+            # profileForm.save(update_fields=['user'])
+
             login(request, user)
 
             return redirect('../')
     else:
         form = UserCreationForm()
+        profileForm = ProfileForm()
 
-    return render(request, 'registration/signup.html', {
-        'form': form
-    })
+    return render(request, 'registration/signup.html', {'form': form, 'profileForm': profileForm})
 
 
 @login_required
@@ -149,8 +187,21 @@ def view_property(request, property_id):
 
 
 @login_required
-def my_bookings(request):
-    return render(request, 'hospedajes_app/my_bookings.html')
+def my_bookings(request, username):
+
+    rentalDates = ''
+
+    profile = Profile.objects.get(email=username)
+    bookings = Booking.objects.get(profile=profile)
+
+    for i in bookings:
+        rentalbybooking = RentalDate.Objects.get(booking=i)
+
+        for j in rentalbybooking:
+            rentalDates.append(j)
+
+    return render(request, 'hospedajes_app/my_bookings.html',{'rentalDates' : rentalDates})
+
 
 
 # class SecretPage(LoginRequiredMixin, TemplateView):

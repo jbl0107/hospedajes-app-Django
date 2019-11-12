@@ -11,6 +11,9 @@
           <form method="post">
             {% csrf_token %}
             {{ form|crispy }}
+
+            {{ profileForm|crispy }}
+
             <button type="submit" class="btn btn-primary">Sign up</button>
           </form>
         </div>

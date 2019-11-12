@@ -1,6 +1,36 @@
 {% extends 'hospedajes_app/base.html' %}
 
+{% block titulo %}Mis Reservas{% endblock %}
+
+
 {% block content %}
 
-  <p>Vista 'Mis Reservas' en construcción! (ni lo empece xd)</p>
+<h2>Reservas</h2><br/>
+
+{% if rentalDates %}
+
+<table>
+    <tr>
+        <th>Propiedad</th>
+        <th>Fechas</th>
+    </tr>
+
+    {% for rental in rentalDates%}
+
+    <tr>
+        <td>{{ rental.property.title }}</td>
+        <td> FECHAS</td>
+    </tr>
+
+    {% endfor %}
+
+
+</table>
+
+{% else %}
+
+<p>No hay reservas hechas.</p>
+
+{% endif %}
+
 {% endblock %}

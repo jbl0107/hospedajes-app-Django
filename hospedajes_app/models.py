@@ -11,9 +11,10 @@ class Host(User):
 
 
 class Profile(models.Model):
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
-    email = models.EmailField()
+    email = models.EmailField(unique=True)
     dni = models.IntegerField(unique=True)
 
     def __str__(self):
