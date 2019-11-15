@@ -179,7 +179,7 @@ def view_property(request, property_id):
                     d.booking = booking
                     d.save(update_fields=['booking'])
 
-            return HttpResponseRedirect(reverse('hospedajes_app:myBookings'))
+            return HttpResponseRedirect(reverse('hospedajes_app:index'))
         else:
             error = 'Debe completar todos los campos para confirmar la reserva!'
 
@@ -187,20 +187,25 @@ def view_property(request, property_id):
 
 
 @login_required
-def my_bookings(request, username):
+def my_bookings(request):
 
-    rentalDates = ''
+    properties = Property.objects.filter(user_id=request.user.id)
 
-    profile = Profile.objects.get(email=username)
-    bookings = Booking.objects.get(profile=profile)
+    return render(request, 'hospedajes_app/my_bookings.html',{'properties':properties})
 
-    for i in bookings:
-        rentalbybooking = RentalDate.Objects.get(booking=i)
+@login_required
+def bookingByProperty(request, property_id):
 
-        for j in rentalbybooking:
-            rentalDates.append(j)
+    property = Property.objects.get(id=property_id)
+    rentalDates = RentalDate.objects.filter(property=property)
+    totalAmount = 0
 
-    return render(request, 'hospedajes_app/my_bookings.html',{'rentalDates' : rentalDates})
+    for rd in rentalDates:
+        if rd.booking:
+            totalAmount+= rd.booking.total
+
+    return render(request, 'hospedajes_app/bookingByProperty.html',{'property':property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
+
 
 
 

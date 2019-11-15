@@ -7,30 +7,43 @@
 
 <h2>Reservas</h2><br/>
 
-{% if rentalDates %}
+<section class="row">
+    {% if properties %}
+    {% for p in properties %}
+    <article class="col-4 mb-4">
+        <div class="card">
 
-<table>
-    <tr>
-        <th>Propiedad</th>
-        <th>Fechas</th>
-    </tr>
+            <img src="{{ p.image.url }}" width="100%" height="200px">
 
-    {% for rental in rentalDates%}
+            <div class="card-body p-2">
+                <h5 class="text-primary">{{ p.city }}</h5>
+                <h4 class="text-dark">{{ p.title }}</h4>
+                <p>{{ p.description }}</p>
 
-    <tr>
-        <td>{{ rental.property.title }}</td>
-        <td> FECHAS</td>
-    </tr>
-
+                <div class="d-block-inline mt-2">
+                    <div class="row">
+                        <div class="col-8">
+                            <p>{{ p.pax }} Huéspedes</p>
+                            <p>${{ p.daily_import|floatformat:2 }} ARS por noche</p>
+                        </div>
+                        <div class="col-4 mt-2">
+                            <a class="btn btn-success float-right" href="{% url 'hospedajes_app:bookingByProperty' p.id %}"
+                               class="btn btn-primary"> Ver Reservas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
     {% endfor %}
 
+    {% else %}
 
-</table>
+    <div class="col">
+        <h3 class="text-center">No hay propiedades</h3>
+    </div>
 
-{% else %}
-
-<p>No hay reservas hechas.</p>
-
-{% endif %}
+    {% endif %}
+</section>
 
 {% endblock %}

@@ -14,7 +14,9 @@ urlpatterns = [
     path('new_feature/', views.feature_form, name='featureForm'),
     path('new_comfort/', views.comfort_form, name='comfortForm'),
     path('property/<int:property_id>/', views.view_property, name='property'),
-    path('my_bookings/<username>', views.my_bookings, name='myBookings'),
+    path('my_bookings/<int:property_id>/', views.bookingByProperty, name='bookingByProperty'),
+    path('my_bookings/', views.my_bookings, name='myBookings'),
+
     # path('secret2/', views.SecretPage.as_view(), name='secret2'),
 
     # url(r'^alta_salon/$', login_required(ingresar_salon), name='altaSalon'),
