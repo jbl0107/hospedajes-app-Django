@@ -20,8 +20,9 @@
 <table class="table table-striped table-hover table table-responsive-sm">
     <thead class="thead-dark">
         <tr>
-            <th scope="col">Fecha</th>
+            <th scope="col">Fecha Alquilada</th>
             <th scope="col">Pasajero</th>
+            <th scope="col">Fecha de pago</th>
             <th scope="col">Contacto</th>
         </tr>
     </thead>
@@ -31,10 +32,12 @@
         {% if rd.booking %}
             <td><p>{{ rd.date }}</p></td>
             <td><p>{{ rd.booking.profile.surname }}, {{ rd.booking.profile.name }}</p></td>
+            <td><p>{{ rd.booking.date }}</p></td>
             <td><p>{{ rd.booking.profile.email }}</p></td>
         {% else %}
             <td><p class="text-danger">{{ rd.date }}</p></td>
             <td><p class="text-danger">VACANTE</p></td>
+            <td><p class="text-danger">-----------</p></td>
             <td><p class="text-danger">-----------</p></td>
         </tbody>
     {% endif %}

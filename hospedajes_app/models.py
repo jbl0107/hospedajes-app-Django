@@ -54,17 +54,6 @@ class Comfort(models.Model):
         verbose_name_plural = 'Comforts'
 
 
-class Booking(models.Model):  # Reserva
-    profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
-    total = models.FloatField(default=0)
-
-    def __str__(self):
-        return self.profile.name + ", " + self.profile.surname + "."
-
-    class Meta:
-        verbose_name_plural = 'Bookings'
-
-
 class Property(models.Model):
     pax = models.IntegerField()
     title = models.CharField(max_length=25)
@@ -80,6 +69,19 @@ class Property(models.Model):
 
     class Meta:
         verbose_name_plural = 'Properties'
+
+
+class Booking(models.Model):  # Reserva
+    profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
+    total = models.FloatField(default=0)
+    date = models.DateTimeField(null=True)
+    property = models.ForeignKey(Property, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.profile.name + ", " + self.profile.surname + "."
+
+    class Meta:
+        verbose_name_plural = 'Bookings'
 
 
 class ComfortXProperty(models.Model):

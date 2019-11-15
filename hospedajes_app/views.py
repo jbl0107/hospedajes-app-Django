@@ -1,4 +1,4 @@
-from datetime import timezone
+from datetime import timezone, datetime, date
 
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
@@ -167,7 +167,7 @@ def view_property(request, property_id):
                 profile = Profile(name=name, surname=surname, email=email)
                 profile.save()
 
-            booking = Booking(profile=profile, total=total)
+            booking = Booking(profile=profile, total=total, date=datetime.now(), property=property)
             booking.save()
 
             for d in rentalDates:
@@ -197,17 +197,11 @@ def bookingByProperty(request, property_id):
 
     property = Property.objects.get(id=property_id)
     rentalDates = RentalDate.objects.filter(property=property)
+    bookings = Booking.objects.filter(property=property)
     totalAmount = 0
 
-    bookings = rentalDates.values('booking', 'booking__total').annotate(dcount=Count('booking')).exclude(booking=None)
-    # bookings = Booking.objects.filter(rentaldate__booking__isnull=False, rentaldate__property=property).annotate(dcount=Count('id')).values('id', 'total', 'dcount')
-
     for b in bookings:
-        totalAmount += b['booking__total']
-
-    #for rd in rentalDates:
-     #   if rd.booking:
-            # totalAmount += rd.booking.total
+        totalAmount += b.total
 
     return render(request, 'hospedajes_app/bookingByProperty.html', {'property': property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
 
