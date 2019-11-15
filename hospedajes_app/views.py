@@ -57,11 +57,9 @@ def index(request):
 def signup(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
-        profileForm = ProfileForm(request.POST)
 
-        if form.is_valid() and profileForm.is_valid():
+        if form.is_valid():
             form.save()
-            profileForm.save()
 
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
@@ -72,9 +70,8 @@ def signup(request):
             return redirect('../')
     else:
         form = UserCreationForm()
-        profileForm = ProfileForm()
 
-    return render(request, 'registration/signup.html', {'form': form, 'profileForm': profileForm})
+    return render(request, 'registration/signup.html', {'form': form})
 
 
 @login_required
