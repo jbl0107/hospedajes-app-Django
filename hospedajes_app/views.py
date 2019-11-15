@@ -1,6 +1,8 @@
 from datetime import timezone
 
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login
+from django.db.models import Count, Sum, QuerySet
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect, get_object_or_404
@@ -59,14 +61,11 @@ def signup(request):
 
         if form.is_valid() and profileForm.is_valid():
             form.save()
+            profileForm.save()
 
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
-
-            profileForm.save()
-            # profileForm.user = user
-            # profileForm.save(update_fields=['user'])
 
             login(request, user)
 
@@ -79,7 +78,8 @@ def signup(request):
 
 
 @login_required
-@permission_required('hospedajes_app.propertyForm', login_url='login')
+@staff_member_required
+# @permission_required('hospedajes_app.propertyForm', login_url='login')
 def property_form(request):
     cities = City.objects.all()
 
@@ -95,15 +95,14 @@ def property_form(request):
 
 
 @login_required
-# @permission_required('hospedajes_app.propertyForm', login_url='login')
+@staff_member_required
 def city_form(request):
     cities = City.objects.all()
 
     if request.method == 'POST':
         form = CityForm(request.POST)
         if form.is_valid():
-            new_city = form.save()
-            # return HttpResponseRedirect(reverse('hospedajes_app:cityForm'))
+            form.save()
     else:
         form = CityForm()
 
@@ -111,15 +110,14 @@ def city_form(request):
 
 
 @login_required
-@permission_required('hospedajes_app.propertyForm', login_url='login')
+@staff_member_required
 def feature_form(request):
     features = Feature.objects.all()
 
     if request.method == 'POST':
         form = FeatureForm(request.POST)
         if form.is_valid():
-            new_feature = form.save()
-            # return HttpResponseRedirect(reverse('hospedajes_app:featureForm'))
+            form.save()
     else:
         form = FeatureForm()
 
@@ -127,15 +125,14 @@ def feature_form(request):
 
 
 @login_required
-@permission_required('hospedajes_app.propertyForm', login_url='login')
+@staff_member_required
 def comfort_form(request):
     comforts = Comfort.objects.all()
 
     if request.method == 'POST':
         form = ComfortForm(request.POST)
         if form.is_valid():
-            new_comfort = form.save()
-            # return HttpResponseRedirect(reverse('hospedajes_app:comfortForm'))
+            form.save()
     else:
         form = ComfortForm()
 
@@ -159,16 +156,15 @@ def view_property(request, property_id):
         name = request.POST['name']
         surname = request.POST['surname']
         email = request.POST['email']
-        dni = request.POST['dni']
 
-        if datesSelected and name and surname and email and dni:
+        if datesSelected and name and surname and email:
             datesSelected = datesSelected.split(", ")
             total = total[1:]
 
             try:
-                profile = Profile.objects.get(dni=dni)
+                profile = Profile.objects.get(email=email)
             except Profile.DoesNotExist:
-                profile = Profile(name=name, surname=surname, email=email, dni=dni)
+                profile = Profile(name=name, surname=surname, email=email)
                 profile.save()
 
             booking = Booking(profile=profile, total=total)
@@ -183,28 +179,37 @@ def view_property(request, property_id):
         else:
             error = 'Debe completar todos los campos para confirmar la reserva!'
 
-    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'comforts': comforts, 'features': features, 'dateList': dateList})
+    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'comforts': comforts, 'features': features, 'dateList': dateList, 'error': error})
 
 
 @login_required
+@staff_member_required
 def my_bookings(request):
 
     properties = Property.objects.filter(user_id=request.user.id)
 
-    return render(request, 'hospedajes_app/my_bookings.html',{'properties':properties})
+    return render(request, 'hospedajes_app/my_bookings.html', {'properties': properties})
+
 
 @login_required
+@staff_member_required
 def bookingByProperty(request, property_id):
 
     property = Property.objects.get(id=property_id)
     rentalDates = RentalDate.objects.filter(property=property)
     totalAmount = 0
 
-    for rd in rentalDates:
-        if rd.booking:
-            totalAmount+= rd.booking.total
+    bookings = rentalDates.values('booking', 'booking__total').annotate(dcount=Count('booking')).exclude(booking=None)
+    # bookings = Booking.objects.filter(rentaldate__booking__isnull=False, rentaldate__property=property).annotate(dcount=Count('id')).values('id', 'total', 'dcount')
 
-    return render(request, 'hospedajes_app/bookingByProperty.html',{'property':property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
+    for b in bookings:
+        totalAmount += b['booking__total']
+
+    #for rd in rentalDates:
+     #   if rd.booking:
+            # totalAmount += rd.booking.total
+
+    return render(request, 'hospedajes_app/bookingByProperty.html', {'property': property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
 
 
 

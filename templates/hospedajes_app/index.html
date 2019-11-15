@@ -4,38 +4,52 @@
 
 {% block content %}
 
-<h2>Propiedades</h2><br/>
+<h2 class="text-center">Encontrá tu Hogar</h2><br/>
 
 
 <nav class="navbar navbar-expand-lg text-dark bg-light mb-4">
 
-    <form method="post" novalidate>
+    <form method="post" class="" novalidate>
         {% csrf_token %}
-        <p class="d-inline">Ciudad: </p>
-        <select name="city" id="city" class="select d-inline">
-            <option value="">
-                Seleccione una ciudad
-            </option>
-            {% if cities %}
-            {% for city in cities %}
-            <option value="{{ city.id }}">
-                {{ city.name }}
-            </option>
-            {% endfor %}
-            {% endif %}
-        </select>
 
-        <p class="d-inline">Huésped/es: </p>
-        <input type="number" name="pax" id="pax" class="d-inline" placeholder="0" value="0" min="0">
+        <div class="row">
+            <div class="col-2">
+                <label for="city" class="d-inline">Ciudad: </label>
+                <select name="city" id="city" class="form-control d-inline">
+                    <option value="">
+                        Seleccione una ciudad
+                    </option>
+                    {% if cities %}
+                        {% for city in cities %}
+                            <option value="{{ city.id }}">
+                                {{ city.name }}
+                            </option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+            </div>
 
-        <label>Fecha de inicio:</label>
-        <input type="date" name="initDate" id="initDate">
-        <label>Fecha final:</label>
-        <input type="date" name="endDate" id="endDate">
+            <div class="col-2">
+                <label for="pax" class="d-inline">Huésped/es: </label>
+                <input type="number" name="pax" id="pax" placeholder="0" value="0" min="0" class="form-control">
+            </div>
 
-        <button type="submit" class="btn btn-warning d-inline">
-            Filtrar
-        </button>
+            <div class="col-3">
+                <label for="initDate" class="d-inline">Fecha inicio:</label>
+                <input type="date" name="initDate" id="initDate" class="form-control">
+            </div>
+
+            <div class="col-3">
+                <label for="endDate" class="d-inline">Fecha final:</label>
+                <input type="date" name="endDate" id="endDate" class="form-control">
+            </div>
+
+            <div class="col-2" style="margin-top:21px;">
+                <button type="submit" class="btn btn-warning">Filtrar</button>
+                <button type="reset" class="btn btn-warning">Reset</button>
+            </div>
+
+        </div>
 
     </form>
 </nav>

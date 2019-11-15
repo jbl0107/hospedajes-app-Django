@@ -13,8 +13,11 @@
 
             <div class="card-body p-2">
                 <p class="lead font-weight-bold text-uppercase" style="font-size: 1.50rem">{{ property.title }}</p>
+
+                <p class="">Propiedad disponible en {{ property.city }}</p>
+                <p> Hospedado por <b>{{ property.user.username }}</b></p>
+
                 <hr class="mt-1 mb-2">
-                <p class="mb-1">Propiedad disponible en {{ property.city }}</p>
 
                 <div class="d-inline">
                     <i class="fa fa-users mr-1" aria-hidden="true">
@@ -96,13 +99,9 @@
                     </div>
 
                     <div class="row mt-2 mb-3">
-                        <div class="col-7">
+                        <div class="col-12">
                             <label for="email" class="mb-0">Email</label>
                             <input type="text" id="email" name="email" placeholder="email@example.com" class="form-control" required>
-                        </div>
-                        <div class="col-5">
-                            <label for="dni" class="mb-0">Dni</label>
-                            <input type="number" id="dni" name="dni" placeholder="12312312" class="form-control" required>
                         </div>
                     </div>
 
@@ -110,6 +109,11 @@
                 </form>
             </div>
         </div>
+        {% if error %}
+            <div class="alert alert-danger mt-2">
+                {{ error }}
+            </div>
+        {% endif %}
     </div>
 
 </div>

@@ -14,7 +14,6 @@ class Profile(models.Model):
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
     email = models.EmailField(unique=True)
-    dni = models.IntegerField(unique=True)
 
     def __str__(self):
         return self.name + ", " + self.surname + "."

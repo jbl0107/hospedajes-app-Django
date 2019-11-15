@@ -5,7 +5,7 @@ from .models import Property, City, RentalDate, Feature, Comfort, Profile
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'city', 'features', )
+        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'city', 'features', 'user',)
 
 
 class CityForm(forms.ModelForm):
@@ -29,4 +29,4 @@ class ComfortForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('name', 'surname', 'email', 'dni',)
+        fields = ('name', 'surname', 'email',)

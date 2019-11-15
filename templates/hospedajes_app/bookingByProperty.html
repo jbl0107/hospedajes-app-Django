@@ -1,72 +1,45 @@
 {% extends 'hospedajes_app/base.html' %}
 
-{% block titulo %}
-
-{{ property.title }}
-
-{% endblock %}
+{% block titulo %} {{ property.title }} {% endblock %}
 
 {% block content %}
 
 <h2>{{ property.title }}</h2>
 
-
-<nav class="navbar navbar-expand-lg text-dark bg-light mb-4">
+<nav class="navbar navbar-expand-lg text-dark bg-light mb-4 mt-2">
 
     <p class="d-inline mr-2"><b>Precio Diario:</b> ${{property.daily_import}}</p>
-    <p class="d-inline ml-2"><b>Total Recaudado:</b> ${{totalAmount}}</p>
+    <p class="d-inline ml-2"><b>Total Recaudado:</b> <span class="text-success">${{totalAmount}}</span></p>
 
     <button type="button" class="btn btn-warning d-inline ml-auto" >
         <a href="{% url 'hospedajes_app:myBookings' %}">Volver</a>
     </button>
-
 </nav>
 
 
-<table class="table">
-    <tr>
-        <th>
-            Fecha
-        </th>
-        <th>
-            Pasajero
-        </th>
-        <th>
-            Contacto
-        </th>
-    </tr>
-
+<table class="table table-striped table-hover table table-responsive-sm">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Pasajero</th>
+            <th scope="col">Contacto</th>
+        </tr>
+    </thead>
     {% for rd in rentalDates %}
-
     <tr>
+        <tbody>
         {% if rd.booking %}
-        <td>
-            {{rd.date}}
-        </td>
-        <td>
-            <p>{{ rd.booking.profile.surname }}, {{rd.booking.profile.name}}</p>
-        </td>
-        <td>
-            <p>{{ rd.booking.profile.email }}</p>
-        </td>
+            <td><p>{{ rd.date }}</p></td>
+            <td><p>{{ rd.booking.profile.surname }}, {{ rd.booking.profile.name }}</p></td>
+            <td><p>{{ rd.booking.profile.email }}</p></td>
         {% else %}
-        <td style="color:red;">
-            {{rd.date}}
-        </td>
-        <td >
-            <p style="color:red;">VACANTE</p>
-        </td>
-        <td >
-            <p style="color:red;">-----------</p>
-        </td>
-
-        {% endif %}
+            <td><p class="text-danger">{{ rd.date }}</p></td>
+            <td><p class="text-danger">VACANTE</p></td>
+            <td><p class="text-danger">-----------</p></td>
+        </tbody>
+    {% endif %}
     </tr>
-
     {% endfor %}
-
-
-
 </table>
 
 {% endblock %}
