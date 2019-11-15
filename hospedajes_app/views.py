@@ -95,7 +95,7 @@ def property_form(request):
 
 
 @login_required
-@permission_required('hospedajes_app.propertyForm', login_url='login')
+# @permission_required('hospedajes_app.propertyForm', login_url='login')
 def city_form(request):
     cities = City.objects.all()
 

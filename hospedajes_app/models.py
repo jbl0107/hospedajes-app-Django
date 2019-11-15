@@ -11,7 +11,6 @@ class Host(User):
 
 
 class Profile(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     name = models.CharField(max_length=25)
     surname = models.CharField(max_length=25)
     email = models.EmailField(unique=True)
@@ -68,7 +67,6 @@ class Booking(models.Model):  # Reserva
 
 
 class Property(models.Model):
-    REQUIRED_FIELDS = ('user',)
     pax = models.IntegerField()
     title = models.CharField(max_length=25)
     description = models.CharField(max_length=100, null=True)
@@ -76,7 +74,7 @@ class Property(models.Model):
     daily_import = models.FloatField()
     city = models.ForeignKey(City, on_delete=models.DO_NOTHING)
     features = models.ManyToManyField(Feature, blank=True)
-    user = models.ForeignKey(Host, null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(Host, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.title + ", " + self.description + "."
