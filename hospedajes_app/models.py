@@ -71,7 +71,7 @@ class Property(models.Model):
         verbose_name_plural = 'Properties'
 
 
-class Booking(models.Model):  # Reserva
+class Reserva(models.Model):  # Reserva
     profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
     total = models.FloatField(default=0)
     date = models.DateTimeField(null=True)
@@ -81,7 +81,7 @@ class Booking(models.Model):  # Reserva
         return self.profile.name + ", " + self.profile.surname + "."
 
     class Meta:
-        verbose_name_plural = 'Bookings'
+        verbose_name_plural = 'Reservas'
 
 
 class CapacidadXProperty(models.Model):
@@ -98,7 +98,7 @@ class CapacidadXProperty(models.Model):
 
 class RentalDate(models.Model):
     property = models.ForeignKey(Property, on_delete=models.DO_NOTHING)
-    booking = models.ForeignKey(Booking, null=True, blank=True, on_delete=models.DO_NOTHING)
+    reserva = models.ForeignKey(Reserva, null=True, blank=True, on_delete=models.DO_NOTHING)
     date = models.DateField()
 
     def __str__(self):

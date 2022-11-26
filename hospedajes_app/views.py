@@ -14,7 +14,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from hospedajes_app.forms import TipoAulaForm, PropertyForm, CaracteristicaForm, CapacidadForm, ProfileForm
-from hospedajes_app.models import Property, TipoAula, RentalDate, Caracteristica, Capacidad, CapacidadXProperty, Booking, Profile, Host
+from hospedajes_app.models import Property, TipoAula, RentalDate, Caracteristica, Capacidad, CapacidadXProperty, Reserva, Profile, Host
 
 
 def index(request):
@@ -140,7 +140,7 @@ def view_property(request, property_id):
     error = ''
     dateList = ''
     property = Property.objects.get(id=property_id)
-    rentalDates = RentalDate.objects.filter(property_id=property_id, booking_id=None)
+    rentalDates = RentalDate.objects.filter(property_id=property_id, reserva_id=None)
     capacidades = CapacidadXProperty.objects.filter(property_id=property_id)
     caracteristicas = Caracteristica.objects.filter(property__pk=property_id)
 
@@ -164,13 +164,13 @@ def view_property(request, property_id):
                 profile = Profile(name=name, surname=surname, email=email)
                 profile.save()
 
-            booking = Booking(profile=profile, total=total, date=datetime.now(), property=property)
-            booking.save()
+            reserva = Reserva(profile=profile, total=total, date=datetime.now(), property=property)
+            reserva.save()
 
             for d in rentalDates:
                 if str(d.date) in datesSelected:
-                    d.booking = booking
-                    d.save(update_fields=['booking'])
+                    d.reserva = reserva
+                    d.save(update_fields=['reserva'])
 
             return HttpResponseRedirect(reverse('hospedajes_app:index'))
         else:
@@ -181,26 +181,26 @@ def view_property(request, property_id):
 
 @login_required
 @staff_member_required
-def my_bookings(request):
+def my_reservas(request):
 
     properties = Property.objects.filter(user_id=request.user.id)
 
-    return render(request, 'hospedajes_app/my_bookings.html', {'properties': properties})
+    return render(request, 'hospedajes_app/my_reservas.html', {'properties': properties})
 
 
 @login_required
 @staff_member_required
-def bookingByProperty(request, property_id):
+def reservaByProperty(request, property_id):
 
     property = Property.objects.get(id=property_id)
     rentalDates = RentalDate.objects.filter(property=property)
-    bookings = Booking.objects.filter(property=property)
+    reservas = Reserva.objects.filter(property=property)
     totalAmount = 0
 
-    for b in bookings:
+    for b in reservas:
         totalAmount += b.total
 
-    return render(request, 'hospedajes_app/bookingByProperty.html', {'property': property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
+    return render(request, 'hospedajes_app/reservaByProperty.html', {'property': property, 'rentalDates': rentalDates, 'totalAmount': totalAmount})
 
 
 

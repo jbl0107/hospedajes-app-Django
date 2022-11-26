@@ -14,8 +14,8 @@ urlpatterns = [
     path('new_caracteristica/', views.caracteristica_form, name='caracteristicaForm'),
     path('new_capacidad/', views.capacidad_form, name='capacidadForm'),
     path('property/<int:property_id>/', views.view_property, name='property'),
-    path('my_bookings/<int:property_id>/', views.bookingByProperty, name='bookingByProperty'),
-    path('my_bookings/', views.my_bookings, name='myBookings'),
+    path('my_reservas/<int:property_id>/', views.reservaByProperty, name='reservaByProperty'),
+    path('my_reservas/', views.my_reservas, name='myReservas'),
 
     # path('secret2/', views.SecretPage.as_view(), name='secret2'),
 

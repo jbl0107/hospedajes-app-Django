@@ -12,7 +12,7 @@
     <p class="d-inline ml-2"><b>Total Recaudado:</b> <span class="text-success">${{totalAmount}}</span></p>
 
     <button type="button" class="btn btn-warning d-inline ml-auto" >
-        <a href="{% url 'hospedajes_app:myBookings' %}">Volver</a>
+        <a href="{% url 'hospedajes_app:myReservas' %}">Volver</a>
     </button>
 </nav>
 
@@ -29,11 +29,11 @@
     {% for rd in rentalDates %}
     <tr>
         <tbody>
-        {% if rd.booking %}
+        {% if rd.reserva %}
             <td><p>{{ rd.date }}</p></td>
-            <td><p>{{ rd.booking.profile.surname }}, {{ rd.booking.profile.name }}</p></td>
-            <td><p>{{ rd.booking.date }}</p></td>
-            <td><p>{{ rd.booking.profile.email }}</p></td>
+            <td><p>{{ rd.reserva.profile.surname }}, {{ rd.reserva.profile.name }}</p></td>
+            <td><p>{{ rd.reserva.date }}</p></td>
+            <td><p>{{ rd.reserva.profile.email }}</p></td>
         {% else %}
             <td><p class="text-danger">{{ rd.date }}</p></td>
             <td><p class="text-danger">VACANTE</p></td>
