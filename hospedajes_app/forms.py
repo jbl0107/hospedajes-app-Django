@@ -1,5 +1,5 @@
 from django import forms
-from .models import Property, TipoAula, RentalDate, Caracteristica, Comfort, Profile
+from .models import Property, TipoAula, RentalDate, Caracteristica, Capacidad, Profile
 
 
 class PropertyForm(forms.ModelForm):
@@ -20,9 +20,9 @@ class CaracteristicaForm(forms.ModelForm):
         fields = ('name',)
 
 
-class ComfortForm(forms.ModelForm):
+class CapacidadForm(forms.ModelForm):
     class Meta:
-        model = Comfort
+        model = Capacidad
         fields = ('name', 'className',)
 
 

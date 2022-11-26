@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import TipoAula, Property, RentalDate, Caracteristica, ComfortXProperty, Comfort, Host
+from .models import TipoAula, Property, RentalDate, Caracteristica, CapacidadXProperty, Capacidad, Host
 
 admin.site.register(TipoAula)
 admin.site.register(Caracteristica)
-admin.site.register(Comfort)
+admin.site.register(Capacidad)
 admin.site.register(Host)
 
 
@@ -13,13 +13,13 @@ class RentalDate_inline(admin.TabularInline):
     # max_num = 30
 
 
-class Comfort_inline(admin.TabularInline):
-    model = ComfortXProperty
+class Capacidad_inline(admin.TabularInline):
+    model = CapacidadXProperty
     fk_name = 'property'
 
 
 class PropertyAdmin(admin.ModelAdmin):
-    inlines = [Comfort_inline, RentalDate_inline,]
+    inlines = [Capacidad_inline, RentalDate_inline,]
 
 
 admin.site.register(Property, PropertyAdmin)

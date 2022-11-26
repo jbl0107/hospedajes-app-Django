@@ -43,7 +43,7 @@ class Caracteristica(models.Model):
         verbose_name_plural = 'Caracteristicas'
 
 
-class Comfort(models.Model):
+class Capacidad(models.Model):
     name = models.CharField(max_length=25, unique=True)
     className = models.CharField(max_length=50, blank=True)
 
@@ -51,7 +51,7 @@ class Comfort(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Comforts'
+        verbose_name_plural = 'Capacidades'
 
 
 class Property(models.Model):
@@ -84,16 +84,16 @@ class Booking(models.Model):  # Reserva
         verbose_name_plural = 'Bookings'
 
 
-class ComfortXProperty(models.Model):
-    comfort = models.ForeignKey(Comfort, on_delete=models.DO_NOTHING)
+class CapacidadXProperty(models.Model):
+    capacidad = models.ForeignKey(Capacidad, on_delete=models.DO_NOTHING)
     property = models.ForeignKey(Property, on_delete=models.DO_NOTHING)
     quantity = models.IntegerField()
 
     def __str__(self):
-        return "ComfortXProperty"
+        return "CapacidadXProperty"
 
     class Meta:
-        verbose_name_plural = 'ComfortsXProperty'
+        verbose_name_plural = 'CapacidadesXProperty'
 
 
 class RentalDate(models.Model):

@@ -13,8 +13,8 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from hospedajes_app.forms import TipoAulaForm, PropertyForm, CaracteristicaForm, ComfortForm, ProfileForm
-from hospedajes_app.models import Property, TipoAula, RentalDate, Caracteristica, Comfort, ComfortXProperty, Booking, Profile, Host
+from hospedajes_app.forms import TipoAulaForm, PropertyForm, CaracteristicaForm, CapacidadForm, ProfileForm
+from hospedajes_app.models import Property, TipoAula, RentalDate, Caracteristica, Capacidad, CapacidadXProperty, Booking, Profile, Host
 
 
 def index(request):
@@ -123,17 +123,17 @@ def caracteristica_form(request):
 
 @login_required
 @staff_member_required
-def comfort_form(request):
-    comforts = Comfort.objects.all()
+def capacidad_form(request):
+    capacidades = Capacidad.objects.all()
 
     if request.method == 'POST':
-        form = ComfortForm(request.POST)
+        form = CapacidadForm(request.POST)
         if form.is_valid():
             form.save()
     else:
-        form = ComfortForm()
+        form = CapacidadForm()
 
-    return render(request, 'hospedajes_app/forms/comfort_form.html', {'comforts': comforts, 'form': form})
+    return render(request, 'hospedajes_app/forms/capacidad_form.html', {'capacidades': capacidades, 'form': form})
 
 
 def view_property(request, property_id):
@@ -141,7 +141,7 @@ def view_property(request, property_id):
     dateList = ''
     property = Property.objects.get(id=property_id)
     rentalDates = RentalDate.objects.filter(property_id=property_id, booking_id=None)
-    comforts = ComfortXProperty.objects.filter(property_id=property_id)
+    capacidades = CapacidadXProperty.objects.filter(property_id=property_id)
     caracteristicas = Caracteristica.objects.filter(property__pk=property_id)
 
     for d in rentalDates:
@@ -176,7 +176,7 @@ def view_property(request, property_id):
         else:
             error = 'Debe completar todos los campos para confirmar la reserva!'
 
-    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'comforts': comforts, 'caracteristicas': caracteristicas, 'dateList': dateList, 'error': error})
+    return render(request, 'hospedajes_app/view_property.html', {'property': property, 'capacidades': capacidades, 'caracteristicas': caracteristicas, 'dateList': dateList, 'error': error})
 
 
 @login_required
