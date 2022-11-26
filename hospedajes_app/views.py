@@ -13,24 +13,24 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from hospedajes_app.forms import CityForm, PropertyForm, FeatureForm, ComfortForm, ProfileForm
-from hospedajes_app.models import Property, City, RentalDate, Feature, Comfort, ComfortXProperty, Booking, Profile, Host
+from hospedajes_app.forms import TipoAulaForm, PropertyForm, FeatureForm, ComfortForm, ProfileForm
+from hospedajes_app.models import Property, TipoAula, RentalDate, Feature, Comfort, ComfortXProperty, Booking, Profile, Host
 
 
 def index(request):
-    cities = City.objects.all()
+    tiposAula = TipoAula.objects.all()
     properties = Property.objects.all()
 
     if request.method == 'POST':
 
-        id_city = request.POST['city']
+        id_tipoAula = request.POST['tipoAula']
         cant_pax = int(request.POST['pax'])
         initDate = request.POST['initDate']
         endDate = request.POST['endDate']
 
-        if id_city:
-            city = City.objects.get(id=id_city)
-            properties = properties.filter(city=city)
+        if id_tipoAula:
+            tipoAula = TipoAula.objects.get(id=id_tipoAula)
+            properties = properties.filter(tipoAula=tipoAula)
 
         if cant_pax >= 1:
             properties = properties.filter(pax__gte=cant_pax)
@@ -51,7 +51,7 @@ def index(request):
                  prop.append(property)
             properties = prop
 
-    return render(request, 'hospedajes_app/index.html', {'properties': properties, 'cities': cities})
+    return render(request, 'hospedajes_app/index.html', {'properties': properties, 'tiposAula': tiposAula})
 
 
 def signup(request):
@@ -78,7 +78,7 @@ def signup(request):
 @staff_member_required
 # @permission_required('hospedajes_app.propertyForm', login_url='login')
 def property_form(request):
-    cities = City.objects.all()
+    tiposAula = TipoAula.objects.all()
 
     if request.method == 'POST':
         form = PropertyForm(request.POST, request.FILES)
@@ -88,22 +88,22 @@ def property_form(request):
     else:
         form = PropertyForm()
 
-    return render(request, 'hospedajes_app/forms/property_form.html', {'cities': cities, 'form': form})
+    return render(request, 'hospedajes_app/forms/property_form.html', {'tiposAula': tiposAula, 'form': form})
 
 
 @login_required
 @staff_member_required
-def city_form(request):
-    cities = City.objects.all()
+def tipoAula_form(request):
+    tiposAula = TipoAula.objects.all()
 
     if request.method == 'POST':
-        form = CityForm(request.POST)
+        form = TipoAulaForm(request.POST)
         if form.is_valid():
             form.save()
     else:
-        form = CityForm()
+        form = TipoAulaForm()
 
-    return render(request, 'hospedajes_app/forms/city_form.html', {'cities': cities, 'form': form})
+    return render(request, 'hospedajes_app/forms/tipoAula_form.html', {'tiposAula': tiposAula, 'form': form})
 
 
 @login_required

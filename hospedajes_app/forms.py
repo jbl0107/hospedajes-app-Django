@@ -1,16 +1,16 @@
 from django import forms
-from .models import Property, City, RentalDate, Feature, Comfort, Profile
+from .models import Property, TipoAula, RentalDate, Feature, Comfort, Profile
 
 
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'city', 'features', 'user',)
+        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'tipoAula', 'features', 'user',)
 
 
-class CityForm(forms.ModelForm):
+class TipoAulaForm(forms.ModelForm):
     class Meta:
-        model = City
+        model = TipoAula
         fields = ('name',)
 
 

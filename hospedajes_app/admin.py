@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import City, Property, RentalDate, Feature, ComfortXProperty, Comfort, Host
+from .models import TipoAula, Property, RentalDate, Feature, ComfortXProperty, Comfort, Host
 
-admin.site.register(City)
+admin.site.register(TipoAula)
 admin.site.register(Feature)
 admin.site.register(Comfort)
 admin.site.register(Host)

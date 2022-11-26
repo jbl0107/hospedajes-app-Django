@@ -22,14 +22,14 @@ class Profile(models.Model):
         verbose_name_plural = "Profiles"
 
 
-class City(models.Model):
+class TipoAula(models.Model):
     name = models.CharField(max_length=25, unique=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Cities'
+        verbose_name_plural = 'TiposAula'
 
 
 class Feature(models.Model):
@@ -60,7 +60,7 @@ class Property(models.Model):
     description = models.CharField(max_length=100, null=True)
     image = models.ImageField(null=True, blank=True)
     daily_import = models.FloatField()
-    city = models.ForeignKey(City, on_delete=models.DO_NOTHING)
+    tipoAula = models.ForeignKey(TipoAula, on_delete=models.DO_NOTHING)
     features = models.ManyToManyField(Feature, blank=True)
     user = models.ForeignKey(Host, null=True, on_delete=models.SET_NULL)
 

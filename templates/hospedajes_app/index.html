@@ -14,15 +14,15 @@
 
         <div class="row">
             <div class="col-2">
-                <label for="city" class="d-inline">Ciudad: </label>
-                <select name="city" id="city" class="form-control d-inline">
+                <label for="tipoAula" class="d-inline">Ciudad: </label>
+                <select name="tipoAula" id="tipoAula" class="form-control d-inline">
                     <option value="">
                         Seleccione una ciudad
                     </option>
-                    {% if cities %}
-                        {% for city in cities %}
-                            <option value="{{ city.id }}">
-                                {{ city.name }}
+                    {% if tiposAula %}
+                        {% for tipoAula in tiposAula %}
+                            <option value="{{ tipoAula.id }}">
+                                {{ tipoAula.name }}
                             </option>
                         {% endfor %}
                     {% endif %}
@@ -64,7 +64,7 @@
             <img src="{{ p.image.url }}" width="100%" height="200px">
 
             <div class="card-body p-2">
-                <h5 class="text-primary">{{ p.city }}</h5>
+                <h5 class="text-primary">{{ p.tipoAula }}</h5>
                 <h4 class="text-dark">{{ p.title }}</h4>
                 <p>{{ p.description }}</p>
 
