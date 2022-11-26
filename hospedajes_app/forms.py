@@ -1,11 +1,11 @@
 from django import forms
-from .models import Property, TipoAula, RentalDate, Feature, Comfort, Profile
+from .models import Property, TipoAula, RentalDate, Caracteristica, Comfort, Profile
 
 
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'tipoAula', 'features', 'user',)
+        fields = ('title', 'description', 'pax', 'daily_import', 'image', 'tipoAula', 'caracteristicas', 'user',)
 
 
 class TipoAulaForm(forms.ModelForm):
@@ -14,9 +14,9 @@ class TipoAulaForm(forms.ModelForm):
         fields = ('name',)
 
 
-class FeatureForm(forms.ModelForm):
+class CaracteristicaForm(forms.ModelForm):
     class Meta:
-        model = Feature
+        model = Caracteristica
         fields = ('name',)
 
 

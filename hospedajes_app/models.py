@@ -32,7 +32,7 @@ class TipoAula(models.Model):
         verbose_name_plural = 'TiposAula'
 
 
-class Feature(models.Model):
+class Caracteristica(models.Model):
     name = models.CharField(max_length=25, unique=True)
     className = models.CharField(max_length=50, blank=True)
 
@@ -40,7 +40,7 @@ class Feature(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Features'
+        verbose_name_plural = 'Caracteristicas'
 
 
 class Comfort(models.Model):
@@ -61,7 +61,7 @@ class Property(models.Model):
     image = models.ImageField(null=True, blank=True)
     daily_import = models.FloatField()
     tipoAula = models.ForeignKey(TipoAula, on_delete=models.DO_NOTHING)
-    features = models.ManyToManyField(Feature, blank=True)
+    caracteristicas = models.ManyToManyField(Caracteristica, blank=True)
     user = models.ForeignKey(Host, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
