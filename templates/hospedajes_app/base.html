@@ -24,7 +24,7 @@
 
     <nav class="navbar navbar-expand-lg text-light bg-dark mb-4">
 
-        <a class="navbar-brand" href="{% url 'hospedajes_app:index' %}">Hospedajes App</a>
+        <a class="navbar-brand" href="{% url 'hospedajes_app:index' %}">ACME-ETSII</a>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'hospedajes_app:index' %}">Home</a>
+                    <a class="nav-link" href="{% url 'hospedajes_app:index' %}">Inicio</a>
                 </li>
                 {% if user.is_authenticated %}
                     {% if user.is_superuser or user.is_staff %}
@@ -60,9 +60,9 @@
                                 <div class="dropdown-submenu pull-left"><a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Altas</a>
                                     <ul class="dropdown-menu">
                                         <!--<a class="dropdown-item" href="{% url 'hospedajes_app:propertyForm' %}">Propiedad</a>-->
-                                        <a class="dropdown-item" href="{% url 'hospedajes_app:tipoAulaForm' %}">Ciudad</a>
-                                        <a class="dropdown-item" href="{% url 'hospedajes_app:caracteristicaForm' %}">Servicios</a>
-                                        <a class="dropdown-item" href="{% url 'hospedajes_app:capacidadForm' %}">Comodidades</a>
+                                        <a class="dropdown-item" href="{% url 'hospedajes_app:tipoAulaForm' %}">Tipo Aula</a>
+                                        <a class="dropdown-item" href="{% url 'hospedajes_app:caracteristicaForm' %}">Caracteristicas</a>
+                                        <a class="dropdown-item" href="{% url 'hospedajes_app:capacidadForm' %}">Capacidades</a>
                                     </ul>
                                 </div>
                                 <a class="dropdown-item" href="{% url 'admin:index' %}">Administración</a>
@@ -70,14 +70,14 @@
 
                             <a class="dropdown-item" href="{% url 'password_change' %}">Cambiar contraseña</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
+                            <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
                         </div>
                     </li>
                 </ul>
             {% else %}
                 <form class="form-inline my-2 my-lg-0">
-                    <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
-                    <a href="{% url 'hospedajes_app:signup' %}" class="btn btn-primary ml-2">Sign up</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-secondary">Iniciar sesión</a>
+                    <a href="{% url 'hospedajes_app:signup' %}" class="btn btn-primary ml-2">Registarse</a>
                 </form>
             {% endif %}
         </div>

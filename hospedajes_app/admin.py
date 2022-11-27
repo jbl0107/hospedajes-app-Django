@@ -1,10 +1,12 @@
 from django.contrib import admin
-from .models import TipoAula, Property, RentalDate, Caracteristica, CapacidadXProperty, Capacidad, Host
+from .models import Profile, TipoAula, Property, RentalDate, Caracteristica, CapacidadXProperty, Capacidad, Host
 
 admin.site.register(TipoAula)
 admin.site.register(Caracteristica)
 admin.site.register(Capacidad)
 admin.site.register(Host)
+admin.site.register(Profile)
+
 
 
 class RentalDate_inline(admin.TabularInline):

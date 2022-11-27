@@ -63,6 +63,7 @@ class Property(models.Model):
     tipoAula = models.ForeignKey(TipoAula, on_delete=models.DO_NOTHING)
     caracteristicas = models.ManyToManyField(Caracteristica, blank=True)
     user = models.ForeignKey(Host, null=True, on_delete=models.SET_NULL)
+    hora = models.TextField(max_length=13, null=True)
 
     def __str__(self):
         return self.title + ", " + self.description + "."

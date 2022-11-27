@@ -26,7 +26,7 @@ def index(request):
         id_tipoAula = request.POST['tipoAula']
         cant_pax = int(request.POST['pax'])
         initDate = request.POST['initDate']
-        endDate = request.POST['endDate']
+        hora = request.POST['hora']
 
         if id_tipoAula:
             tipoAula = TipoAula.objects.get(id=id_tipoAula)
@@ -43,13 +43,9 @@ def index(request):
                  prop.append(property)
             properties = prop
 
-        prop = []
-        if endDate:
-            for property in properties:
-                rd = RentalDate.objects.filter(property=property, date__lte=endDate)
-                if len(rd)>0:
-                 prop.append(property)
-            properties = prop
+        if hora:
+            properties = properties.filter(hora=hora)
+
 
     return render(request, 'hospedajes_app/index.html', {'properties': properties, 'tiposAula': tiposAula})
 

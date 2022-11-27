@@ -1,10 +1,14 @@
 {% extends "hospedajes_app/base.html" %}
 
-{% block titulo %}Propiedades Disponibles{% endblock %}
+{% block titulo %}Reserva de espacios{% endblock %}
 
 {% block content %}
 
-<h2 class="text-center">Encontrá tu Hogar</h2><br/>
+<h2 class="text-center">Espacios a reservar</h2><br/>
+<h5 class="text-center">Debido al horario lectivo, cada aula solo se podrá reservar a una hora determinada. Pero gracias a 
+    nuestra oferta de reservas, puede contar de cualquier tipo a cualquier hora. 
+</h5>
+<br>
 
 
 <nav class="navbar navbar-expand-lg text-dark bg-light mb-4">
@@ -14,10 +18,10 @@
 
         <div class="row">
             <div class="col-2">
-                <label for="tipoAula" class="d-inline">Ciudad: </label>
+                <label for="tipoAula" class="d-inline">Tipo de aula: </label>
                 <select name="tipoAula" id="tipoAula" class="form-control d-inline">
                     <option value="">
-                        Seleccione una ciudad
+                        Seleccione un tipo de aula
                     </option>
                     {% if tiposAula %}
                         {% for tipoAula in tiposAula %}
@@ -30,23 +34,23 @@
             </div>
 
             <div class="col-2">
-                <label for="pax" class="d-inline">Huésped/es: </label>
+                <label for="pax" class="d-inline">Capacidad: </label>
                 <input type="number" name="pax" id="pax" placeholder="0" value="0" min="0" class="form-control">
             </div>
 
             <div class="col-3">
-                <label for="initDate" class="d-inline">Fecha inicio:</label>
+                <label for="initDate" class="d-inline">Fecha:</label>
                 <input type="date" name="initDate" id="initDate" class="form-control">
             </div>
 
             <div class="col-3">
-                <label for="endDate" class="d-inline">Fecha final:</label>
-                <input type="date" name="endDate" id="endDate" class="form-control">
+                <label for="hora" class="d-inline">Hora:</label>
+                <input type="text" name="hora" placeholder="08:00 - 09:00" class="form-control">
             </div>
 
-            <div class="col-2" style="margin-top:21px;">
+            <div class="col-3" style="margin-top:21px;">
                 <button type="submit" class="btn btn-warning">Filtrar</button>
-                <button type="reset" class="btn btn-warning">Reset</button>
+                <button type="reset" class="btn btn-warning">Resetear</button>
             </div>
 
         </div>
@@ -71,8 +75,8 @@
                 <div class="d-block-inline mt-2">
                     <div class="row">
                         <div class="col-8">
-                            <p>{{ p.pax }} Huéspedes</p>
-                            <p>${{ p.daily_import|floatformat:2 }} ARS por noche</p>
+                            <p>Capacidad: {{ p.pax }}</p>
+                            <p>{{ p.daily_import|floatformat:2 }} €/h</p>
                         </div>
                         <div class="col-4 mt-2">
                             <a class="btn btn-success float-right" href="{% url 'hospedajes_app:property' p.id %}"

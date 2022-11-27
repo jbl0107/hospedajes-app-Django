@@ -1,6 +1,6 @@
 {% extends 'hospedajes_app/base.html' %}
 
-{% block titulo %}Ingreso de Nueva Propiedad{% endblock %}
+{% block titulo %}Ingreso de nuevo espacio{% endblock %}
 
 {% load crispy_forms_tags %}
 
@@ -10,7 +10,7 @@
         <div class="col-6">
           <div class="card">
             <div class="card-body">
-              <h2>Alta de Propiedad</h2>
+              <h2>Alta de espacio</h2>
               <form method="post" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -20,38 +20,4 @@
           </div>
         </div>
     </div>
-
-<!--
-     <form method="post" enctype="multipart/form-data"> {% csrf_token %}
-
-          Titulo:<br>
-          <input type="text" name="title" ><br>
-
-          Pasajeros:<br>
-          <input type="number" name="pax"><br>
-
-          Descripcion:<br>
-          <input type="text" name="description"><br>
-
-          Imagen:<br>
-          <input type="file" name="propertyImage" ><br>
-
-          Importe Diario:<br>
-          <input type="number" name="daily" ><br>
-
-          Ciudad:<br>
-         <select name="city">
-             {% for c in cities %}
-             <option value="{{ c.id }}"> {{ c.name }} </option>
-             {% endfor %}
-         </select>
- -->
-            <!--
-          Usuario (deberia levantarlo dinamicamente):<br>
-          <input type="text" name="user" ><br><br>
-           -->
-<!--
-          <input type="submit" value="Agregar">
-     </form>
--->
 {% endblock %}

@@ -14,14 +14,14 @@
             <div class="card-body p-2">
                 <p class="lead font-weight-bold text-uppercase" style="font-size: 1.50rem">{{ property.title }}</p>
 
-                <p class="">Propiedad disponible en {{ property.city }}</p>
-                <p> Hospedado por <b>{{ property.user.username }}</b></p>
+                <p class="">Espacio disponible en {{ property.city }}</p>
+                <p> Ofrecido por <b>{{ property.user.username }}</b></p>
 
                 <hr class="mt-1 mb-2">
 
                 <div class="d-inline">
                     <i class="fa fa-users mr-1" aria-hidden="true">
-                        <p class="d-inline">{{ property.pax }} huéspedes </p>
+                        <p class="d-inline">Capacidad: {{ property.pax }}</p>
                     </i>
                 </div>
 
@@ -37,9 +37,9 @@
 
                 <hr class="mb-1 mt-2">
 
-                <h4 style="font-size: 1.35rem"> Servicios</h4>
+                <h4 style="font-size: 1.35rem"> Caracteristicas</h4>
                 <div class="d-inline">
-                    {% for f in features %}
+                    {% for f in caracteristicas %}
                     <i class="{{ f.className }} mr-1" aria-hidden="true">
                         <p class="d-inline"> {{ f.name }}</p>
                     </i>
@@ -56,9 +56,9 @@
             <div class="card-body pb-0">
                 <h4 class="text-center">Formulario de Reserva</h4>
 
-                <i class="fa fa-dollar-sign mb-2 mt-2" aria-hidden="true" style="font-size: 1.1rem">
-                    <spam id='price' style="font-size: 1.2rem"> {{ property.daily_import|floatformat:2 }}</spam>
-                    <p class="d-inline" style="font-size: 0.8rem"> ARS por noche </p>
+                <i class="fa fa-euro-sign mb-2 mt-2" aria-hidden="true" style="font-size: 1.1rem">
+                    <spam id='price' style="font-size: 1.2rem">{{ property.daily_import|floatformat:2 }}</spam>
+                    <p class="d-inline" style="font-size: 0.8rem"></p>
                 </i>
 
                 <hr class="mt-0 mb-2">
@@ -70,20 +70,20 @@
                     <input id="dates" name="dates" type='text' placeholder="Click aquí para mostrar calendario de disponibilidad" readonly required class="form-control bg-white text-sm" onfocus="addDates('{{ dateList }}')" onfocusin="calculateTotal()">
 
                     <div class="mt-3">
-                        <p class="d-inline">${{ property.daily_import|floatformat:2 }} x 2 noches</p>
-                        <p id='priceTotal' class="d-inline float-right">$0</p>
+                        <p class="d-inline">{{ property.daily_import|floatformat:2 }} € x hora</p>
+                        <p id='priceTotal' class="d-inline float-right">0 €</p>
                     </div>
 
                     <hr class="mt-2 mb-2">
                     <div>
                         <p class="d-inline">Comisión por servicio (8%)</p>
-                        <p id='comision' class="d-inline float-right">$0</p>
+                        <p id='comision' class="d-inline float-right">0 €</p>
                     </div>
 
                     <hr class="mt-2 mb-2">
 
                     <label class="mb-2" for="total"><h5 class="d-inline">Total</h5></label>
-                    <input type="text" id="total" name='total' placeholder="$0" readonly required class="d-inline float-right text-right" style="border:0; outline:none">
+                    <input type="text" id="total" name='total' placeholder="0 €" readonly required class="d-inline float-right text-right" style="border:0; outline:none">
 
                     <hr class="mb-3 mt-0 bg-success">
 
